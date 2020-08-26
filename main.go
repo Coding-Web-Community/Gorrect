@@ -9,20 +9,20 @@ import (
 	"os/exec"
 	"strings"
 
-  "time"
+	"time"
 )
 
 var (
 	extentions = map[string]string{
-		"py":  "python3",
-		"js":  "node",
-		"ex":  "elixir",
-		"cpp": "gcc",
-		"go":  "go",
-    "java": "java",
+		"py":   "python3",
+		"js":   "node",
+		"ex":   "elixir",
+		"cpp":  "gcc",
+		"go":   "go",
+		"java": "java",
 	}
 
-	TESTCASES []testCase
+	testCases []testCase
 )
 
 type testCase struct {
@@ -41,18 +41,18 @@ func init() {
 
 	scanner := bufio.NewScanner(jsonFile)
 	for scanner.Scan() {
-		var testcase testCase
+		var test testCase
 
-		json.Unmarshal([]byte(scanner.Text()), &testcase)
-		TESTCASES = append(TESTCASES, testcase)
+		json.Unmarshal([]byte(scanner.Text()), &test)
+		testCases = append(testCases, test)
 	}
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	fmt.Println(TESTCASES)
-	fmt.Println(len(TESTCASES))
+	fmt.Println(testCases)
+	fmt.Println(len(testCases))
 }
 
 func main() {
@@ -67,9 +67,9 @@ func main() {
 
 		var failed bool
 
-    start := time.Now()
+		start := time.Now()
 
-		for _, testcase := range TESTCASES {
+		for _, testcase := range testCases {
 
 			s := testcase.S
 			t := testcase.T
