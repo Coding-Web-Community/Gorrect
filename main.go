@@ -26,8 +26,7 @@ var (
 )
 
 type testCase struct {
-	S     string `json:"s"`
-	T     string `json:"t"`
+	Args []string `json:"args"`
 	Truth string `json:"truth"`
 }
 
@@ -59,27 +58,33 @@ func main() {
 	cwd, _ := os.Getwd()
 	files, _ := ioutil.ReadDir(fmt.Sprintf("%s/submissions", cwd))
 	for _, file := range files {
-		fn := file.Name()
+		fn := fmt.Sprintf("submissions/%s", file.Name())
 		cmnd := GetFileCommand(file.Name())
-
-		var err error
-		var out []byte
 
 		var failed bool
 
 		start := time.Now()
 
 		for _, testcase := range testCases {
-
-			s := testcase.S
-			t := testcase.T
-			truth := testcase.Truth
+			c := exec.Command(cmnd)
 
 			if cmnd == "go" {
-				out, err = exec.Command(cmnd, "run", fmt.Sprintf("%s/submissions/%s", cwd, fn), s, t).Output()
+				c.Args = append(c.Args, "run")
+				c.Args = append(c.Args, fn)
 			} else {
-				out, err = exec.Command(cmnd, fmt.Sprintf("%s/submissions/%s", cwd, fn), s, t).Output()
+				c.Args = append(c.Args, fn)
 			}
+
+
+			args := testcase.Args
+			truth := testcase.Truth
+
+			for _, arg := range args {
+				c.Args = append(c.Args, arg)
+			}
+
+			out, err := c.Output()
+
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -88,26 +93,17 @@ func main() {
 
 			if resp != truth {
 				failed = true
-				fmt.Println(s, t, truth, resp)
+				fmt.Printf("testcase: %v truth: %s found: %s\n", args, truth, resp)
 				break
 			}
 		}
 
 		if failed == true {
-			fmt.Printf("%v failed!\n", fn)
+			fmt.Printf("%v failed!	 %v\n", fn, time.Now().Sub(start))
 		} else {
 			fmt.Printf("%v correct!  %v\n", fn, time.Now().Sub(start))
 		}
 	}
-}
-
-func StringIn(s string, a []string) bool {
-	for _, t := range a {
-		if s == t {
-			return true
-		}
-	}
-	return false
 }
 
 func GetFileCommand(filename string) string {
