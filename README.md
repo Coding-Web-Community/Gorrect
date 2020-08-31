@@ -8,7 +8,7 @@ Feel free to contribute, but before you do make an issue!
 
 # What test cases should look like
 ```
-{"s": "vile", "t": "evil","truth": "true"}
-{"s": "serbia", "t": "rabies","truth": "true"}
-{"s": "mathis", "t": "golang", "truth": "false"}
+{"args": ["vile", "evil"],"truth": "true"}
+{"args": ["serbia", "rabies"],"truth": "true"}
+{"args": ["mathis", "golang"], "truth": "false"}
 ```
