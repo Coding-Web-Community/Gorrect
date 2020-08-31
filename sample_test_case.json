@@ -1,7 +1,7 @@
 {"args": ["vile", "evil"],"truth": "true"}
 {"args": ["serbia", "rabies"],"truth": "true"}
 {"args": ["mathis", "golang"], "truth": "false"}
-{"args": ["a", "b"], "truth": "true"}
+{"args": ["a", "b"], "truth": "false"}
 {"args": ["aba", "aab"], "truth": "true"}
 {"args": ["aba", "baa"], "truth": "true"}
 {"args": ["monkey", "yeknom"], "truth": "true"}
